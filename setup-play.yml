@@ -1,0 +1,31 @@
+---
+- name: Setup DrupalVM
+  hosts: local
+  roles:
+    - role: pacifica.ansible_drupalvm
+  post_tasks:
+    - name: Create DrupalVM Config
+      copy:
+        content: "{{ drupalvm_config | to_nice_yaml }}"
+        dest: "{{ drupalvm_dir }}/local.config.yml"
+    - name: Create System Service for Postfix IPv6 issue
+      copy:
+        content: |
+          [Unit]
+          Description=Postfix IPv6 Hosts Fix
+          Before=postfix.service
+          [Service]
+          ExecStart=/usr/local/bin/ansible-playbook /etc/ansible/pacifica-vm/hosts-play.yml
+          [Install]
+          WantedBy=multi-user.target
+        dest: "/etc/systemd/system/postfix-hosts-fix.service"
+        owner: root
+        group: root
+        mode: 0644
+    - name: reload systemd
+      command: systemctl daemon-reload
+    - name: enable postfix hosts fix
+      service:
+        name: postfix-hosts-fix
+        enabled: true
+        state: started

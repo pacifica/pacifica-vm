@@ -94,7 +94,8 @@ postgresql_users:
   - name: pacifica
     pass: pacifica
     password: pacifica
-
+postgresql_service_state: started
+postgresql_service_enabled: true
 postgresql_packages:
   - postgresql
   - postgresql-devel
