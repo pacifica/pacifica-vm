@@ -1,0 +1,9 @@
+---
+- hosts: local
+  tasks:
+    - name: Fix Hosts file for Postfix
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^::1'
+        state: absent
+        unsafe_writes: yes
