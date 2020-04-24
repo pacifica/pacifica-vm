@@ -1,0 +1,22 @@
+---
+- name: Verify the Services
+  hosts: local
+  tasks:
+    - name: Check URLs
+      uri:
+        url: "http://localhost:{{ item }}"
+        return_content: true
+      register: url_resp
+      loop:
+        - 8121
+        - 8080
+        - 8180
+        - 8066
+        - 8181
+        - 8051
+        - 8081
+    - name: Assert Status
+      assert:
+        that:
+          - "item == 200"
+      loop: "{{ url_resp.results | map(attribute='status') | list }}"

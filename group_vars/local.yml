@@ -1,0 +1,158 @@
+---
+drupalvm_version: 5.2.0
+drupalvm_dir: "/etc/ansible/drupal-vm-{{ drupalvm_version }}"
+
+__common_python: &__common_python
+  aux_pkg:
+    - uwsgi
+    - pip
+    - redis
+    - amqp
+    - psycopg2
+__notify_config: &__notify_config
+  <<: *__common_python
+  ini_config:
+    celery:
+      broker_url: redis://127.0.0.1:6379/0
+    database:
+      peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_notify
+__cartd_config: &__cartd_config
+  <<: *__common_python
+  env_vars:
+    VOLUME_PATH: /srv/cartdata
+    CARTD_CONFIG: /opt/default/cartd_frontend.ini
+    CARTD_CPCONFIG: /opt/default/cartd_frontend-cp.ini
+  ini_config:
+    celery:
+      broker_url: redis://127.0.0.1:6379/1
+    database:
+      peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_cartd
+__ingest_config: &__ingest_config
+  <<: *__common_python
+  env_vars:
+    VOLUME_PATH: /srv/ingestdata
+    INGEST_CONFIG: /opt/default/ingest_frontend.ini
+    INGEST_CPCONFIG: /opt/default/ingest_frontend-cp.ini
+  ini_config:
+    celery:
+      broker_url: redis://127.0.0.1:6379/2
+    database:
+      peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_ingest
+pacifica_available_services:
+  archiveinterface:
+    <<: *__common_python
+    processes: 4
+    env_vars:
+      PAI_PREFIX: /srv/archivedata
+      ARCHIVEINTERFACE_CONFIG: /opt/default/archiveinterface.ini
+      ARCHIVEINTERFACE_CPCONFIG: /opt/default/archiveinterface-cp.ini
+  metadata:
+    <<: *__common_python
+    ini_config:
+      database:
+        peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_metadata
+  proxy:
+    <<: *__common_python
+  policy:
+    <<: *__common_python
+  uniqueid:
+    <<: *__common_python
+    ini_config:
+      database:
+        peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_uniqueid
+  notify_backend: *__notify_config
+  notify_frontend: *__notify_config
+  ingest_backend: *__ingest_config
+  ingest_frontend: *__ingest_config
+  cartd_backend: *__cartd_config
+  cartd_frontend: *__cartd_config
+pacifica_enabled_services:
+  - metadata
+  - policy
+  - proxy
+  - uniqueid
+  - archiveinterface
+  - cartd_frontend
+  - cartd_backend
+  - ingest_frontend
+  - ingest_backend
+  - notify_frontend
+  - notify_backend
+
+postgresql_databases:
+  - name: pacifica_metadata
+    owner: pacifica
+  - name: pacifica_uniqueid
+    owner: pacifica
+  - name: pacifica_ingest
+    owner: pacifica
+  - name: pacifica_cartd
+    owner: pacifica
+  - name: pacifica_notify
+    owner: pacifica
+postgresql_users:
+  - name: pacifica
+    pass: pacifica
+    password: pacifica
+
+postgresql_packages:
+  - postgresql
+  - postgresql-devel
+  - postgresql-server
+  - postgresql-contrib
+
+drupalvm_config:
+  hostname_configure: false
+  firewall_enabled: false
+  drupal_build_makefile: false
+  drupal_build_composer: false
+  drupal_build_composer_project: false
+  drupal_install_site: false
+  installed_extras:
+    - drupalconsole
+    - drush
+    - nodejs
+    - solr
+    - mailhog
+    - memcached
+    - pimpmylog
+    - varnish
+  extra_packages:
+    - rsync
+    - sqlite
+    - vim
+    - cronie
+    - crontabs
+    - openssh-server
+    - openssh-clients
+  php_version: "7.3"
+  php_apc_shm_size: "1024M"
+  php_memory_limit: "4096M"
+  php_upload_max_filesize: "4096M"
+  php_post_max_size: "4096M"
+  solr_version: "7.7.2"
+  solr_xms: "1024M"
+  solr_xmx: "2048M"
+  mysql_max_connections: 200
+  mysql_max_allowed_packet: 2048M
+  mysql_query_cache_limit: 1024M
+  mysql_query_cache_size: 256M
+  mysql_query_cache_type: 1
+  mysql_innodb_buffer_pool_size: 128M
+  mysql_innodb_flush_method: O_DIRECT
+  drupal_composer_dependencies:
+    - "drupal/core-dev"
+    - "drupal/console"
+    - "drush/drush:^9"
+    - "drupal/devel"
+    - "drupal/key_auth"
+    - "drupal/restui"
+    - "drupal/subrequests"
+  drupal_enable_modules:
+    - "devel"
+    - "jsonapi"
+    - "rest"
+    - "restui"
+    - "basic_auth"
+    - "key_auth"
+    - "subrequests"

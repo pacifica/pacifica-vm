@@ -7,11 +7,10 @@ language: python
 python: 3.8
 install: pip install ansible molecule docker-py pre-commit pylint pep257 yamllint ansible-lint
 script:
-  - docker build -t travis_local/pacifica/pacifica-vm:latest .
-  - docker run -d --name=pacifica-vm -v /sys/fs/cgroup:/sys/fs/cgroup:ro --privileged travis_local/pacifica/pacifica-vm:latest
-  - docker exec pacifica-vm ansible-playbook /etc/ansible/playbook.yml
-  - docker stop pacifica-vm
-  - docker commit pacifica-vm pacifica/pacifica-vm:latest
+  - /bin/bash -xe scripts/buildit.sh
+  - /bin/bash -xe scripts/verify.sh
+  - /bin/bash -xe scripts/commit.sh
+  - /bin/bash -xe scripts/cleanup.sh
 deploy:
   provider: script
   script: /bin/bash -xe scripts/deploy.sh

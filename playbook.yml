@@ -1,4 +1,26 @@
 ---
-- hosts: all
+- name: Setup DrupalVM
+  hosts: local
   roles:
     - role: pacifica.ansible_drupalvm
+- hosts: local
+  tasks:
+    - name: Create DrupalVM Config
+      copy:
+        content: "{{ drupalvm_config | to_nice_yaml }}"
+        dest: "{{ drupalvm_dir }}/local.config.yml"
+    - name: Setup PostgreSQL
+      include_role:
+        name: geerlingguy.postgresql
+    - name: Setup Redis
+      include_role:
+        name: geerlingguy.redis
+    - name: Setup PostgreSQL
+      include_role:
+        name: pacifica.ansible_pacifica
+    - name: Fix Hosts file for Postfix
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^::1'
+        state: absent
+        unsafe_writes: yes

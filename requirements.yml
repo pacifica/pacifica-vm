@@ -1,2 +1,5 @@
 ---
 - src: pacifica.ansible_drupalvm
+- src: pacifica.ansible_pacifica
+- src: geerlingguy.postgresql
+- src: geerlingguy.redis
