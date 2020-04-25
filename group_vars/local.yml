@@ -106,9 +106,8 @@ drupalvm_config:
   hostname_configure: false
   firewall_enabled: false
   drupal_build_makefile: false
-  drupal_build_composer: false
-  drupal_build_composer_project: false
-  drupal_install_site: false
+  drupal_composer_project_package: pacifica/drupal-project:8.x-vcs-dev
+  drupal_install_profile: pacifica
   installed_extras:
     - drupalconsole
     - drush
@@ -142,18 +141,11 @@ drupalvm_config:
   mysql_innodb_buffer_pool_size: 128M
   mysql_innodb_flush_method: O_DIRECT
   drupal_composer_dependencies:
-    - "drupal/core-dev"
-    - "drupal/console"
-    - "drush/drush:^9"
     - "drupal/devel"
     - "drupal/key_auth"
     - "drupal/restui"
-    - "drupal/subrequests"
   drupal_enable_modules:
     - "devel"
-    - "jsonapi"
-    - "rest"
     - "restui"
     - "basic_auth"
     - "key_auth"
-    - "subrequests"
