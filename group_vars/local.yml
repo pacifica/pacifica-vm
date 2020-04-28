@@ -106,7 +106,7 @@ drupalvm_config:
   hostname_configure: false
   firewall_enabled: false
   drupal_build_makefile: false
-  drupal_composer_project_package: pacifica/drupal-project:8.x-vcs-dev
+  drupal_composer_project_package: pacifica/drupal-project:v0.0.98
   drupal_install_profile: pacifica
   installed_extras:
     - drupalconsole
