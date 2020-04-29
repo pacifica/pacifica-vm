@@ -8,6 +8,21 @@
       loop:
         - "require \"symfony/event-dispatcher:v4.3.11 as v3.4.35\""
         - update
+    - name: Verify Files Ownership
+      file:
+        state: directory
+        path: /var/www/drupalvm/drupal/web/sites/default/files
+        owner: root
+        group: apache
+        mode: 0770
+    - name: Run Drush Cache Rebuild
+      retries: 3
+      delay: 3
+      register: result
+      until: (result.get('rc', -1) | int) == 0
+      shell: drush cr
+      args:
+        chdir: /var/www/drupalvm/drupal
     - name: Setup PostgreSQL
       include_role:
         name: geerlingguy.postgresql
