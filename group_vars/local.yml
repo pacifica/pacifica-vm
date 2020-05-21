@@ -101,13 +101,15 @@ postgresql_packages:
   - postgresql-devel
   - postgresql-server
   - postgresql-contrib
-
+drupal_compose_project_options_dev: "{% if keep_vcs is defined and ( keep_vcs | bool ) %}--keep-vcs{% endif %}"
+drupal_compose_project_package_version: "{% if keep_vcs is defined and ( keep_vcs | bool ) %}8.x-vcs-dev{% else %}v0.0.98{% endif %}"
 drupalvm_config:
   hostname_configure: false
   firewall_enabled: false
   drupal_build_makefile: false
-  drupal_composer_project_package: pacifica/drupal-project:v0.0.98
+  drupal_composer_project_package: "pacifica/drupal-project:{{ drupal_compose_project_package_version }}"
   drupal_install_profile: pacifica
+  drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction {{ drupal_compose_project_options_dev }}"
   installed_extras:
     - drupalconsole
     - drush
