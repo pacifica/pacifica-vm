@@ -6,7 +6,7 @@
 SCRIPT_DIR=$(dirname $0)
 source "${SCRIPT_DIR}/vars.sh"
 
-if [[ ${TRAVIS_PULL_REQUEST} ]]; then exit 0; fi
+if [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then exit 0; fi
 set +x
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 set -x

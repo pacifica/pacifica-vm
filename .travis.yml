@@ -9,9 +9,9 @@ env:
   - KEEP_VCS=true
   - KEEP_VCS=false
 install: pip install ansible molecule docker-py pre-commit pylint pep257 yamllint ansible-lint
-script:
-  - /bin/bash -xe scripts/buildit.sh
-  - /bin/bash -xe scripts/commit.sh
-  - /bin/bash -xe scripts/verify.sh
-  - /bin/bash -xe scripts/cleanup.sh
-  - /bin/bash -xe scripts/deploy.sh
+script: |
+  /bin/bash -xe scripts/buildit.sh && \
+  /bin/bash -xe scripts/commit.sh && \
+  /bin/bash -xe scripts/verify.sh && \
+  /bin/bash -xe scripts/cleanup.sh && \
+  /bin/bash -xe scripts/deploy.sh
