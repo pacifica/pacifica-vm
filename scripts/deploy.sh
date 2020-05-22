@@ -12,6 +12,6 @@ echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 set -x
 docker push pacifica/pacifica-vm:latest${IMG_TAG_EXT}
 if [[ ${TRAVIS_TAG} ]] ; then
-  docker tag pacifica/pacifica-vm:latest pacifica/pacifica-vm:${TRAVIS_TAG}${IMG_TAG_EXT}
+  docker tag pacifica/pacifica-vm:latest${IMG_TAG_EXT} pacifica/pacifica-vm:${TRAVIS_TAG}${IMG_TAG_EXT}
   docker push pacifica/pacifica-vm:${TRAVIS_TAG}${IMG_TAG_EXT}
 fi
