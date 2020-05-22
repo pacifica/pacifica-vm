@@ -1,19 +1,17 @@
 ---
-dist: xenial
+dist: bionic
 sudo: required
 group: edge
 services: docker
 language: python
 python: 3.8
+env:
+  - KEEP_VCS=true
+  - KEEP_VCS=false
 install: pip install ansible molecule docker-py pre-commit pylint pep257 yamllint ansible-lint
 script:
   - /bin/bash -xe scripts/buildit.sh
   - /bin/bash -xe scripts/commit.sh
   - /bin/bash -xe scripts/verify.sh
   - /bin/bash -xe scripts/cleanup.sh
-deploy:
-  provider: script
-  script: /bin/bash -xe scripts/deploy.sh
-  on:
-    branch: master
-    tags: true
+  - /bin/bash -xe scripts/deploy.sh

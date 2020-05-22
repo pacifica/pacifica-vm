@@ -8,6 +8,26 @@
       loop:
         - "require \"symfony/event-dispatcher:v4.3.11 as v3.4.35\""
         - update
+    - name: Remove Packages if Keep VCS
+      command:
+        cmd: "composer remove {{ item }}"
+        chdir: /var/www/drupalvm/drupal
+      loop:
+        - pacifica/pacifica_profiles
+        - pacifica/pacifica_theme
+        - pacifica/pacifica
+      when:
+        - "keep_vcs is defined and ( keep_vcs | bool )"
+    - name: Require Packages if Keep VCS
+      command:
+        cmd: "composer require {{ item }}"
+        chdir: /var/www/drupalvm/drupal
+      loop:
+        - pacifica/pacifica:dev-8.x-1.x
+        - pacifica/pacifica_theme:dev-8.x-1.x
+        - pacifica/pacifica_profiles:dev-8.x-1.x
+      when:
+        - "keep_vcs is defined and ( keep_vcs | bool )"
     - name: Verify Files Ownership
       file:
         state: directory

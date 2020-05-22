@@ -1,6 +1,12 @@
 ---
 - name: Verify the Services
   hosts: local
+  vars:
+    valid_git_dirs:
+      - /var/www/drupalvm/drupal/.git
+      - /var/www/drupalvm/drupal/web/modules/contrib/pacifica/.git
+      - /var/www/drupalvm/drupal/web/themes/contrib/pacifica_theme/.git
+      - /var/www/drupalvm/drupal/web/profiles/contrib/pacifica_profiles/.git
   tasks:
     - name: Check URLs
       uri:
@@ -20,3 +26,26 @@
         that:
           - "item == 200"
       loop: "{{ url_resp.results | map(attribute='status') | list }}"
+    - name: Check Git Directories
+      stat:
+        path: "{{ item }}"
+      register: git_dirs
+      loop: "{{ valid_git_dirs }}"
+    - name: Keep VCS Checks
+      block:
+        - name: Assert Git Directories Exist
+          assert:
+            that:
+              - "item.stat.exists and item.stat.isdir"
+          loop: "{{ git_dirs.results }}"
+      when:
+        - "keep_vcs is defined and ( keep_vcs | bool )"
+    - name: No VCS Checks
+      block:
+        - name: Assert Git Directories don't Exist
+          assert:
+            that:
+              - "not item.stat.exists"
+          loop: "{{ git_dirs.results }}"
+      when:
+        - "keep_vcs is defined and not ( keep_vcs | bool )"
