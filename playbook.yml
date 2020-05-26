@@ -1,13 +1,9 @@
 ---
 - hosts: local
   tasks:
-    - name: Fix Solr API
-      command:
-        cmd: "composer {{ item }}"
-        chdir: /var/www/drupalvm/drupal
-      loop:
-        - "require \"symfony/event-dispatcher:v4.3.11 as v3.4.35\""
-        - update
+    - name: Setup Solr and Drupal Connector
+      include_role:
+        name: pacifica.ansible_drupalsolr
     - name: Remove Packages if Keep VCS
       command:
         cmd: "composer remove {{ item }}"
@@ -25,7 +21,7 @@
       loop:
         - pacifica/pacifica:dev-8.x-1.x
         - pacifica/pacifica_theme:dev-8.x-1.x
-        - pacifica/pacifica_profiles:dev-8.x-1.x
+        - pacifica/pacifica_profiles:dev-8.x-1.x-vcs
       when:
         - "keep_vcs is defined and ( keep_vcs | bool )"
     - name: Verify Files Ownership
