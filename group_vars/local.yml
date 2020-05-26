@@ -102,7 +102,7 @@ postgresql_packages:
   - postgresql-server
   - postgresql-contrib
 drupal_compose_project_options_dev: "{% if keep_vcs is defined and ( keep_vcs | bool ) %}--keep-vcs{% endif %}"
-drupal_compose_project_package_version: "{% if keep_vcs is defined and ( keep_vcs | bool ) %}8.x-vcs-dev{% else %}v0.0.98{% endif %}"
+drupal_compose_project_package_version: "{% if keep_vcs is defined and ( keep_vcs | bool ) %}8.x-vcs-dev{% else %}0.1.0{% endif %}"
 drupalvm_config:
   hostname_configure: false
   firewall_enabled: false

@@ -1,13 +1,9 @@
 ---
 - hosts: local
   tasks:
-    - name: Fix Solr API
-      command:
-        cmd: "composer {{ item }}"
-        chdir: /var/www/drupalvm/drupal
-      loop:
-        - "require \"symfony/event-dispatcher:v4.3.11 as v3.4.35\""
-        - update
+    - name: Setup Solr and Drupal Connector
+      include_role:
+        name: pacifica.ansible_drupalsolr
     - name: Remove Packages if Keep VCS
       command:
         cmd: "composer remove {{ item }}"
