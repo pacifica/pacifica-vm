@@ -143,13 +143,10 @@ drupalvm_config:
   mysql_innodb_buffer_pool_size: 128M
   mysql_innodb_flush_method: O_DIRECT
   drupal_composer_dependencies:
-    - "drupal/devel"
-    - "drupal/devel_generate"
+    - '"symfony/event-dispatcher:4.3.11 as 3.4.41"'
     - "drupal/key_auth"
     - "drupal/restui"
   drupal_enable_modules:
-    - "devel"
-    - "devel_generate"
     - "restui"
     - "basic_auth"
     - "key_auth"

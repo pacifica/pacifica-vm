@@ -1,6 +1,6 @@
 ---
 - src: pacifica.ansible_drupalsolr
-  version: v0.1.0
+  version: v1.0.0
 - src: pacifica.ansible_drupalvm
   version: v0.1.0
 - src: pacifica.ansible_pacifica
