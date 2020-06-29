@@ -142,6 +142,7 @@ drupalvm_config:
   mysql_query_cache_type: 1
   mysql_innodb_buffer_pool_size: 128M
   mysql_innodb_flush_method: O_DIRECT
+  drupal_site_name: Pacifica Site
   drupal_composer_dependencies:
     - '"symfony/event-dispatcher:4.3.11 as 3.4.41"'
     - "drupal/key_auth"
