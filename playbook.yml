@@ -39,13 +39,18 @@
       shell: drush cr
       args:
         chdir: /var/www/drupalvm/drupal
+    - name: Make sure language packs are there
+      package:
+        name:
+          - glibc-all-langpacks
+          - glibc-langpack-en
     - name: Setup PostgreSQL
       include_role:
         name: geerlingguy.postgresql
     - name: Setup Redis
       include_role:
         name: geerlingguy.redis
-    - name: Setup PostgreSQL
+    - name: Setup Pacifica
       include_role:
         name: pacifica.ansible_pacifica
 

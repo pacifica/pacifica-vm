@@ -1,7 +1,4 @@
 ---
-drupalvm_version: 5.2.0
-drupalvm_dir: "/etc/ansible/drupal-vm-{{ drupalvm_version }}"
-
 __common_python: &__common_python
   aux_pkg:
     - uwsgi
@@ -127,7 +124,6 @@ drupalvm_config:
     - crontabs
     - openssh-server
     - openssh-clients
-  php_version: "7.3"
   php_apc_shm_size: "1024M"
   php_memory_limit: "4096M"
   php_upload_max_filesize: "4096M"
