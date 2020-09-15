@@ -108,7 +108,6 @@ drupalvm_config:
   drupal_install_profile: pacifica
   drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction {{ drupal_compose_project_options_dev }}"
   installed_extras:
-    - drupalconsole
     - drush
     - nodejs
     - solr
